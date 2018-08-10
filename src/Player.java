@@ -29,6 +29,7 @@ public class Player {
 		this.matches = new ArrayList<Match>();
 	}
 	
+	
 	public Player(String file_name) {
 		String[] player_data = null;
 		List<String> match_data = new ArrayList<String>();
@@ -58,6 +59,10 @@ public class Player {
 		this.last_match = null;
 	}
 	
+	public String get_handle() {
+		return this.player_handle;
+	}
+	
 	
 	public String toString() {
 		return this.last_name + ", " + this.first_name + ": W:" + this.wins + " L:" + this.losses + " WR:" + this.win_rate + " L_O:" +
@@ -66,8 +71,9 @@ public class Player {
 	
 	
 	public static void main(String[] args){
-		Player p = new Player("/Users/cocop/eclipse-workspace/Pongalytics/src/data/player_data/registration_data/regist_player_0.txt");
-		System.out.println(p.toString());
+		Player p = new Player("/Users/cocop/eclipse-workspace/Pongalytics/src/data/player_data/registration_data/cykasam.txt");
+		Player p2 = Database.find("SS");
+		System.out.println(p2.toString());
 	}
 	
 }

@@ -1,4 +1,4 @@
-Sami,Fawcett,cykasam,25,13,SS
+Spencer,Szeto,SS,13,25,cykasam
 MAT866563501
 MAT671062671
 MAT305512911
