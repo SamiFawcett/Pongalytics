@@ -53,6 +53,11 @@ public class Player {
 		this.player_handle = player_data[2];
 		this.wins = Integer.parseInt(player_data[3]);
 		this.losses = Integer.parseInt(player_data[4]);
+		if(Match.players_confirmed) {
+			for(int i = 0; i < match_data.size(); i++) {
+				matches.add(new Match(match_data.get(i))); 
+			}
+		}
 		DecimalFormat df = new DecimalFormat("#.00");
 		this.win_rate = df.format((double)wins / ((double)wins + (double)losses) * 100);
 		this.last_opponent = null;
@@ -74,6 +79,7 @@ public class Player {
 		Player p = new Player("/Users/cocop/eclipse-workspace/Pongalytics/src/data/player_data/registration_data/cykasam.txt");
 		Player p2 = Database.find("SS");
 		System.out.println(p2.toString());
+		System.out.println(p.toString());
 	}
 	
 }
