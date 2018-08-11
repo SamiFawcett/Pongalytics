@@ -67,6 +67,12 @@ public class Player {
 	public String get_handle() {
 		return this.player_handle;
 	}
+	public String get_first() {
+		return this.first_name;
+	}
+	public String get_last() {
+		return this.last_name;
+	}
 	
 	
 	public String toString() {

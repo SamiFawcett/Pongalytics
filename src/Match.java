@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class Match {
 	private String id;
@@ -13,25 +14,25 @@ public class Match {
 	private Player loser;
 	private int winning_score;
 	private int losing_score;
-	public static HashMap<String, String[]> ID_MAP;
+	public  HashMap<String, String[]> ID_MAP;
 	
 	
 	public Match(Player p1, Player p2) {
-		id = generate_id();
-		in_progress = true;
+		this.id = generate_id();
+		this.in_progress = true;
 		this.winner = null;
 		this.loser = null;
 		Match.players_confirmed = true;
 		this.winning_score = -1;
 		this.losing_score = -1;
-		Match.ID_MAP = null;
+		this.ID_MAP = null;
 		
 	}
 	
 	public Match(String match_id) {
 		this.id = match_id;
 		this.in_progress = false;
-		this.players_confirmed = false;
+		Match.players_confirmed = false;
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(new File(Database.MATCH_BASE_ALL_LOC)));
 			String[] tokens = null;
@@ -45,12 +46,12 @@ public class Match {
 			}
 			br.close();
 			if(!Match.players_confirmed) {
-				this.winner = new Player("/Users/cocop/eclipse-workspace/Pongalytics/src/data/player_data/registration_data/" + tokens[0] + ".txt");
-				this.loser = new Player("/Users/cocop/eclipse-workspace/Pongalytics/src/data/player_data/registration_data/" + tokens[1] + ".txt");
+				this.winner = Database.find(tokens[0]);
+				this.loser = Database.find(tokens[1]);
 			}
-			this.players_confirmed = true;
+			Match.players_confirmed = true;
 			String[] scores = tokens[2].split("-");
-			Match.ID_MAP = new HashMap<String, String[]>();
+			this.ID_MAP = new HashMap<String, String[]>();
 		    ID_MAP.put(this.id, scores);
 			this.winning_score = Integer.parseInt(scores[0]);
 			this.losing_score = Integer.parseInt(scores[1]);
@@ -60,6 +61,17 @@ public class Match {
 		
 	}
 	
+	public static void start() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Player One: ");
+		Player player_one = Database.find(sc.nextLine());
+		System.out.println("Player Two: ");
+		Player player_two = Database.find(sc.nextLine());
+		sc.close();
+		Match m = new Match(player_one, player_two);
+		System.out.println("MATCH_INTIATED");
+		System.out.println(player_one.get_first() + " vs " + player_two.get_first());
+	}
 	
 	public String toString() {
 		return "WINNER: " + this.winner.toString() + ":: W_S:" + this.winning_score + "\n" + "LOSER: " + this.loser.toString() + ":: L_S:" + this.losing_score + "\n";
@@ -72,6 +84,7 @@ public class Match {
 	public Player get_loser() {
 		return this.loser;
 	}
+	
 	
 	private String generate_id() {
 		int id_length = 8;
@@ -91,8 +104,6 @@ public class Match {
 	
 	
 	public static void main(String[] args) {
-		String deserialized =  "MAT866563501";
-		Match m2 = new Match(deserialized);
-		System.out.println(m2.toString());
+		Match.start();
 	}
 }

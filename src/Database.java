@@ -12,14 +12,15 @@ public class Database {
 	
 	public static Player find(String handle) {
 		Player found = null;
-		String[] player_data = null;
 		try {
 			BufferedReader br_base = new BufferedReader(new FileReader(new File(Database.PLAYER_BASE_LOC)));
 			String line;
 			if(br_base.ready()) {
 				while((line = br_base.readLine()) != null) {
 					if(line.equals(handle)){
-						return new Player("/Users/cocop/eclipse-workspace/Pongalytics/src/data/player_data/registration_data/" + handle + ".txt");
+						br_base.close();
+						found = new Player("/Users/cocop/eclipse-workspace/Pongalytics/src/data/player_data/registration_data/" + handle + ".txt");
+						return found;
 					}
 				}
 			}
