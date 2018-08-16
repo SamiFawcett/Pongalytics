@@ -46,8 +46,8 @@ public class Match {
 			}
 			br.close();
 			if(!Match.players_confirmed) {
-				this.winner = Database.find(tokens[0]);
-				this.loser = Database.find(tokens[1]);
+				this.winner = Database.find(tokens[0], false);
+				this.loser = Database.find(tokens[1], false);
 			}
 			Match.players_confirmed = true;
 			String[] scores = tokens[2].split("-");
@@ -64,13 +64,24 @@ public class Match {
 	public static void start() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Player One: ");
-		Player player_one = Database.find(sc.nextLine());
+		Player player_one = Database.find(sc.nextLine(), true);
 		System.out.println("Player Two: ");
-		Player player_two = Database.find(sc.nextLine());
-		sc.close();
+		Player player_two = Database.find(sc.nextLine(), true);
 		Match m = new Match(player_one, player_two);
+		
 		System.out.println("MATCH_INTIATED");
+		
 		System.out.println(player_one.get_first() + " vs " + player_two.get_first());
+		
+		System.out.println("Player One Score: ");
+		String player_one_score = sc.nextLine();
+		
+		System.out.println("Player Two Score: ");
+		String player_two_score = sc.nextLine();
+		
+		Database.write_match(player_one.get_handle(), player_two.get_handle(), m.get_id());
+		System.out.println("MATCH_TERMINATED");
+		sc.close();
 	}
 	
 	public String toString() {

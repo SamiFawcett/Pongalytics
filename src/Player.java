@@ -83,7 +83,7 @@ public class Player {
 	
 	public static void main(String[] args){
 		Player p = new Player("/Users/cocop/eclipse-workspace/Pongalytics/src/data/player_data/registration_data/cykasam.txt");
-		Player p2 = Database.find("SS");
+		Player p2 = Database.find("SS", false);
 		System.out.println(p2.toString());
 		System.out.println(p.toString());
 	}
