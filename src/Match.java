@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -61,12 +62,12 @@ public class Match {
 		
 	}
 	
-	public static void start() {
-		Scanner sc = new Scanner(System.in);
+	public static void start() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		Keyword k = new Keyword();
 		System.out.println("Player One: ");
-		Player player_one = Database.find(sc.nextLine(), true);
+		Player player_one = Database.find(k.read(), true);
 		System.out.println("Player Two: ");
-		Player player_two = Database.find(sc.nextLine(), true);
+		Player player_two = Database.find(k.read(), true);
 		Match m = new Match(player_one, player_two);
 		
 		System.out.println("MATCH_INTIATED");
@@ -74,14 +75,19 @@ public class Match {
 		System.out.println(player_one.get_first() + " vs " + player_two.get_first());
 		
 		System.out.println("Player One Score: ");
-		String player_one_score = sc.nextLine();
-		
+		String player_one_score = k.read();
+			
 		System.out.println("Player Two Score: ");
-		String player_two_score = sc.nextLine();
+		String player_two_score = k.read();
+		
+		if(Integer.parseInt(player_one_score) > Integer.parseInt(player_two_score)) {
+			m.set_score(Integer.parseInt(player_one_score), Integer.parseInt(player_two_score));
+		} else {
+			m.set_score(Integer.parseInt(player_two_score), Integer.parseInt(player_one_score));
+		}
 		
 		Database.write_match(player_one.get_handle(), player_two.get_handle(), m.get_id());
 		System.out.println("MATCH_TERMINATED");
-		sc.close();
 	}
 	
 	public String toString() {
@@ -90,6 +96,11 @@ public class Match {
 	
 	public Player get_winner() {
 		return this.winner;
+	}
+	
+	private void set_score(int winning_score, int losing_score) {
+		this.winning_score = winning_score;
+		this.losing_score = losing_score;
 	}
 	
 	public Player get_loser() {
@@ -114,7 +125,6 @@ public class Match {
 	
 	
 	
-	public static void main(String[] args) {
-		Match.start();
+	public static void main(String[] args) throws Exception {
 	}
 }

@@ -37,7 +37,10 @@ public class Database {
 		
 		if(recursive) {
 			System.out.println(handle + " was not found.");
-			return find(new Scanner(System.in).nextLine(), recursive);
+			
+			try (Scanner sc = new Scanner(System.in)) {
+				return find(sc.nextLine(), recursive);
+			}
 			
 		}
 		else return null;
@@ -61,7 +64,47 @@ public class Database {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+		
+
 	}
+	
+	public static void write_new_player() {
+		System.out.println("REGISTRATION_INTIATIED");
+		try {
+			
+			Scanner sc = new Scanner(System.in);
+			System.out.println("First Name: ");
+			String first_name = sc.nextLine();
+			System.out.println("Last Name: ");
+			String last_name = sc.nextLine();
+			System.out.println("Pongalytics Handle: ");
+			String handle = sc.nextLine();
+			
+			Player p = new Player(first_name, last_name, handle);
+			
+			BufferedWriter bw_p_one = new BufferedWriter(new FileWriter("/Users/cocop/eclipse-workspace/Pongalytics/src/data/player_data/registration_data/" + p.get_handle() + ".txt", false));
+			PrintWriter out_p_one = new PrintWriter(bw_p_one);
+			
+			out_p_one.print(p.get_first() + "," + p.get_last() + "," + p.get_handle() + ",0,0");
+			
+			out_p_one.close();
+			
+			BufferedWriter bw_reg_pla = new BufferedWriter(new FileWriter("/Users/cocop/eclipse-workspace/Pongalytics/src/data/player_data/registered_players.txt", true));
+			PrintWriter out_reg_pla = new PrintWriter(bw_reg_pla);
+			
+			out_reg_pla.println();
+			out_reg_pla.print(p.get_handle());
+			
+			out_reg_pla.close();
+			System.out.println("REGISTRATION_COMPLETED");
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
 	
 	
 
