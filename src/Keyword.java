@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 public class Keyword {
 	private static String KEYWORD_FILE = "/Users/cocop/eclipse-workspace/Pongalytics/src/data/keywords.txt";
@@ -13,7 +12,6 @@ public class Keyword {
 	public static String NEW = "new";
 	public static String START = "start";
 	public Map<String, Method> keyword_map;
-	public Scanner sc = new Scanner(System.in);
 	
 	public Keyword() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		keyword_map = new HashMap<String, Method>();
@@ -27,7 +25,8 @@ public class Keyword {
 	}
 	
 	public String read() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		String line = sc.nextLine();
+		
+			String line = Main.GLOBAL_SCANNER.nextLine();
 		
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(new File(Keyword.KEYWORD_FILE)));
@@ -35,14 +34,14 @@ public class Keyword {
 			if(br.ready()) {
 				while((reader_line = br.readLine()) != null) {
 					if(line.contains(reader_line)) {
-						System.out.println("resp: " + reader_line + ".");
+						System.out.println("COMMAND_ACTIVATED: " + reader_line + ".");
 						this.get_keyword_map().get(reader_line).invoke(null);
 					}
 				}
 			}
 			
 			
-			br.close();
+			
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -55,10 +54,5 @@ public class Keyword {
 	}
 	
 	public static void main(String[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		Keyword k = new Keyword();
-		System.out.println("First Read");
-		k.read();
-		System.out.println("Second Read");
-		k.read();
 	}
 }

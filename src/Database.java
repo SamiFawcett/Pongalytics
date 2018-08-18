@@ -5,15 +5,16 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+
 
 public class Database {
 	public final static String PLAYER_BASE_LOC = "/Users/cocop/eclipse-workspace/Pongalytics/src/data/player_data/registered_players.txt";
 	public final static String MATCH_BASE_ALL_LOC = "/Users/cocop/eclipse-workspace/Pongalytics/src/data/match_data/all_pong_data.txt";
 	public final static String MATCH_BASE_TEMP_LOC = "/Users/cocop/eclipse-workspace/Pongalytics/src/data/match_data/pong_data_summer_2018.txt";
+	
 	
 	public static Player find(String handle, boolean recursive) {
 		Player found = null;
@@ -37,22 +38,26 @@ public class Database {
 		
 		if(recursive) {
 			System.out.println(handle + " was not found.");
-			
-			try (Scanner sc = new Scanner(System.in)) {
-				return find(sc.nextLine(), recursive);
-			}
-			
-		}
-		else return null;
+			return find(Main.GLOBAL_SCANNER.nextLine(), recursive);
+		} else { return null; }
 		
 		
 	}
 	
 	
-	public static void write_match(String player_one_handle, String player_two_handle, String m_id) {
+	public static void write_match(String winner_handle, int winner_score, String loser_handle, int loser_score, String m_id) {
 		try {
-			BufferedWriter bw_p_one = new BufferedWriter(new FileWriter("/Users/cocop/eclipse-workspace/Pongalytics/src/data/player_data/registration_data/" + player_one_handle + ".txt", true));
-			BufferedWriter bw_p_two = new BufferedWriter(new FileWriter("/Users/cocop/eclipse-workspace/Pongalytics/src/data/player_data/registration_data/" + player_two_handle + ".txt", true));
+			//write to pong files first
+			BufferedWriter bw_pong = new BufferedWriter(new FileWriter(Database.MATCH_BASE_ALL_LOC, true));
+			PrintWriter out_pong = new PrintWriter(bw_pong);
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+			LocalDate localDate = LocalDate.now();
+			out_pong.println();
+			out_pong.print(dtf.format(localDate) + " " + winner_handle + " " + loser_handle + " " + winner_score + "-" + loser_score + " " + m_id);
+			out_pong.close();			
+			
+			BufferedWriter bw_p_one = new BufferedWriter(new FileWriter("/Users/cocop/eclipse-workspace/Pongalytics/src/data/player_data/registration_data/" + winner_handle + ".txt", true));
+			BufferedWriter bw_p_two = new BufferedWriter(new FileWriter("/Users/cocop/eclipse-workspace/Pongalytics/src/data/player_data/registration_data/" + loser_handle + ".txt", true));
 			PrintWriter out_p_one = new PrintWriter(bw_p_one);
 			PrintWriter out_p_two = new PrintWriter(bw_p_two);
 			out_p_one.println();
@@ -71,14 +76,13 @@ public class Database {
 	public static void write_new_player() {
 		System.out.println("REGISTRATION_INTIATIED");
 		try {
-			
-			Scanner sc = new Scanner(System.in);
+
 			System.out.println("First Name: ");
-			String first_name = sc.nextLine();
+			String first_name = Main.GLOBAL_SCANNER.nextLine();
 			System.out.println("Last Name: ");
-			String last_name = sc.nextLine();
+			String last_name = Main.GLOBAL_SCANNER.nextLine();
 			System.out.println("Pongalytics Handle: ");
-			String handle = sc.nextLine();
+			String handle = Main.GLOBAL_SCANNER.nextLine();
 			
 			Player p = new Player(first_name, last_name, handle);
 			

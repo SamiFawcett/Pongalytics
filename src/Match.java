@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class Match {
 	private String id;
@@ -82,11 +81,13 @@ public class Match {
 		
 		if(Integer.parseInt(player_one_score) > Integer.parseInt(player_two_score)) {
 			m.set_score(Integer.parseInt(player_one_score), Integer.parseInt(player_two_score));
+			Database.write_match(player_one.get_handle(), Integer.parseInt(player_one_score), player_two.get_handle(), Integer.parseInt(player_two_score), m.get_id());
 		} else {
 			m.set_score(Integer.parseInt(player_two_score), Integer.parseInt(player_one_score));
+			Database.write_match(player_two.get_handle(), Integer.parseInt(player_two_score), player_one.get_handle(), Integer.parseInt(player_one_score), m.get_id());
 		}
 		
-		Database.write_match(player_one.get_handle(), player_two.get_handle(), m.get_id());
+		
 		System.out.println("MATCH_TERMINATED");
 	}
 	
