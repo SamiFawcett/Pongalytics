@@ -61,7 +61,7 @@ public class Match {
 		
 	}
 	
-	public static void start() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+	public static void start() throws Exception {
 		Keyword k = new Keyword();
 		System.out.println("Player One: ");
 		Player player_one = Database.find(k.read(), true);

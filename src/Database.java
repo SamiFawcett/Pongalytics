@@ -14,7 +14,7 @@ public class Database {
 	public final static String PLAYER_BASE_LOC = "/Users/cocop/eclipse-workspace/Pongalytics/src/data/player_data/registered_players.txt";
 	public final static String MATCH_BASE_ALL_LOC = "/Users/cocop/eclipse-workspace/Pongalytics/src/data/match_data/all_pong_data.txt";
 	public final static String MATCH_BASE_TEMP_LOC = "/Users/cocop/eclipse-workspace/Pongalytics/src/data/match_data/pong_data_summer_2018.txt";
-	
+	public static Player LOGGED_IN = null;
 	
 	public static Player find(String handle, boolean recursive) {
 		Player found = null;
@@ -37,11 +37,26 @@ public class Database {
 		}
 		
 		if(recursive) {
-			System.out.println(handle + " was not found.");
+			if(!Keyword.is_keyword(handle)) {
+				System.out.println(handle + " was not found.");
+			}
 			return find(Main.GLOBAL_SCANNER.nextLine(), recursive);
 		} else { return null; }
 		
 		
+	}
+	
+	public static boolean log_in() throws Exception {
+		Keyword k = new Keyword();
+		System.out.println("Pongalytics Handle: ");
+		String handle = k.read();
+		Player p = Database.find(handle, false);
+		if(p != null) {
+			LOGGED_IN = p;
+			System.out.println(p.get_first() + " logged in.");
+			return true;
+		}
+		return false;
 	}
 	
 	
