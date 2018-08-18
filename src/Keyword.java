@@ -21,10 +21,10 @@ public class Keyword {
 		
 		keyword_method_map.put(Keyword.LOGIN, new Commands() {
 			public void invoke() throws Exception{
-				if(Clientbase.LOGGED_IN != null) {
+				if(Clientbase.LOGGED_IN == null) {
 					Clientbase.class.getMethod("log_in").invoke(null);
 				} else {
-					System.out.println("Already logged in.");
+					System.out.println("Already logged in as " + Clientbase.LOGGED_IN.get_handle());
 				}
 			}
 			});

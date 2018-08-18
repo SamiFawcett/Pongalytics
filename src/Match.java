@@ -74,17 +74,17 @@ public class Match {
 		System.out.println(player_one.get_first() + " vs " + player_two.get_first());
 		
 		System.out.println("Player One Score: ");
-		String player_one_score = k.read();
+		int player_one_score = Main.GLOBAL_SCANNER.nextInt();
 			
 		System.out.println("Player Two Score: ");
-		String player_two_score = k.read();
+		int player_two_score = Main.GLOBAL_SCANNER.nextInt();
 		
-		if(Integer.parseInt(player_one_score) > Integer.parseInt(player_two_score)) {
-			m.set_score(Integer.parseInt(player_one_score), Integer.parseInt(player_two_score));
-			Clientbase.write_match(player_one.get_handle(), Integer.parseInt(player_one_score), player_two.get_handle(), Integer.parseInt(player_two_score), m.get_id());
+		if(player_one_score > player_two_score) {
+			m.set_score(player_one_score, player_two_score);
+			Clientbase.write_match(player_one.get_handle(),player_one_score, player_two.get_handle(), player_two_score, m.get_id());
 		} else {
-			m.set_score(Integer.parseInt(player_two_score), Integer.parseInt(player_one_score));
-			Clientbase.write_match(player_two.get_handle(), Integer.parseInt(player_two_score), player_one.get_handle(), Integer.parseInt(player_one_score), m.get_id());
+			m.set_score(player_two_score, player_one_score);
+			Clientbase.write_match(player_two.get_handle(), player_two_score, player_one.get_handle(), player_one_score, m.get_id());
 		}
 		
 		
