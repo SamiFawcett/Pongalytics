@@ -34,7 +34,7 @@ public class Match {
 		this.in_progress = false;
 		Match.players_confirmed = false;
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(new File(Database.MATCH_BASE_ALL_LOC)));
+			BufferedReader br = new BufferedReader(new FileReader(new File(Clientbase.MATCH_BASE_ALL_LOC)));
 			String[] tokens = null;
 			if(br.ready()) {
 				String line;
@@ -46,8 +46,8 @@ public class Match {
 			}
 			br.close();
 			if(!Match.players_confirmed) {
-				this.winner = Database.find(tokens[0], false);
-				this.loser = Database.find(tokens[1], false);
+				this.winner = Clientbase.find(tokens[0], false);
+				this.loser = Clientbase.find(tokens[1], false);
 			}
 			Match.players_confirmed = true;
 			String[] scores = tokens[2].split("-");
@@ -64,9 +64,9 @@ public class Match {
 	public static void start() throws Exception {
 		Keyword k = new Keyword();
 		System.out.println("Player One: ");
-		Player player_one = Database.find(k.read(), true);
+		Player player_one = Clientbase.find(k.read(), true);
 		System.out.println("Player Two: ");
-		Player player_two = Database.find(k.read(), true);
+		Player player_two = Clientbase.find(k.read(), true);
 		Match m = new Match(player_one, player_two);
 		
 		System.out.println("MATCH_INTIATED");
@@ -81,10 +81,10 @@ public class Match {
 		
 		if(Integer.parseInt(player_one_score) > Integer.parseInt(player_two_score)) {
 			m.set_score(Integer.parseInt(player_one_score), Integer.parseInt(player_two_score));
-			Database.write_match(player_one.get_handle(), Integer.parseInt(player_one_score), player_two.get_handle(), Integer.parseInt(player_two_score), m.get_id());
+			Clientbase.write_match(player_one.get_handle(), Integer.parseInt(player_one_score), player_two.get_handle(), Integer.parseInt(player_two_score), m.get_id());
 		} else {
 			m.set_score(Integer.parseInt(player_two_score), Integer.parseInt(player_one_score));
-			Database.write_match(player_two.get_handle(), Integer.parseInt(player_two_score), player_one.get_handle(), Integer.parseInt(player_one_score), m.get_id());
+			Clientbase.write_match(player_two.get_handle(), Integer.parseInt(player_two_score), player_one.get_handle(), Integer.parseInt(player_one_score), m.get_id());
 		}
 		
 		

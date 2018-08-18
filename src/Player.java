@@ -76,7 +76,7 @@ public class Player {
 	
 	
 	public String toString() {
-		return this.last_name + ", " + this.first_name + ": W:" + this.wins + " L:" + this.losses + " WR:" + this.win_rate + " L_O:" +
+		return this.last_name + ", " + this.first_name + ": W:" + this.wins + " L:" + this.losses + " WR:" + this.win_rate + "%" + " L_O:" +
 			   this.last_opponent + " L_M:" + this.last_match;
 	}
 	

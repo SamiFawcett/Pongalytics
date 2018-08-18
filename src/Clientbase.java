@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 
 
 
-public class Database {
+public class Clientbase {
 	public final static String PLAYER_BASE_LOC = "/Users/cocop/eclipse-workspace/Pongalytics/src/data/player_data/registered_players.txt";
 	public final static String MATCH_BASE_ALL_LOC = "/Users/cocop/eclipse-workspace/Pongalytics/src/data/match_data/all_pong_data.txt";
 	public final static String MATCH_BASE_TEMP_LOC = "/Users/cocop/eclipse-workspace/Pongalytics/src/data/match_data/pong_data_summer_2018.txt";
@@ -19,7 +19,7 @@ public class Database {
 	public static Player find(String handle, boolean recursive) {
 		Player found = null;
 		try {
-			BufferedReader br_base = new BufferedReader(new FileReader(new File(Database.PLAYER_BASE_LOC)));
+			BufferedReader br_base = new BufferedReader(new FileReader(new File(Clientbase.PLAYER_BASE_LOC)));
 			String line;
 			if(br_base.ready()) {
 				while((line = br_base.readLine()) != null) {
@@ -50,7 +50,7 @@ public class Database {
 		Keyword k = new Keyword();
 		System.out.println("Pongalytics Handle: ");
 		String handle = k.read();
-		Player p = Database.find(handle, false);
+		Player p = Clientbase.find(handle, false);
 		if(p != null) {
 			LOGGED_IN = p;
 			System.out.println(p.get_first() + " logged in.");
@@ -63,7 +63,7 @@ public class Database {
 	public static void write_match(String winner_handle, int winner_score, String loser_handle, int loser_score, String m_id) {
 		try {
 			//write to pong files first
-			BufferedWriter bw_pong = new BufferedWriter(new FileWriter(Database.MATCH_BASE_ALL_LOC, true));
+			BufferedWriter bw_pong = new BufferedWriter(new FileWriter(Clientbase.MATCH_BASE_ALL_LOC, true));
 			PrintWriter out_pong = new PrintWriter(bw_pong);
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 			LocalDate localDate = LocalDate.now();

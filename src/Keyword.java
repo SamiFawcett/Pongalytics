@@ -21,30 +21,40 @@ public class Keyword {
 		
 		keyword_method_map.put(Keyword.LOGIN, new Commands() {
 			public void invoke() throws Exception{
-				Database.class.getMethod("log_in").invoke(null);
+				if(Clientbase.LOGGED_IN != null) {
+					Clientbase.class.getMethod("log_in").invoke(null);
+				} else {
+					System.out.println("Already logged in.");
+				}
 			}
 			});
 		
 		keyword_method_map.put(Keyword.STATS, new Commands() {
 			public void invoke() throws Exception{
-				System.out.println(Player.class.getMethod("toString").invoke(Database.LOGGED_IN));
+				if(Clientbase.LOGGED_IN != null) {
+					System.out.println(Player.class.getMethod("toString").invoke(Clientbase.LOGGED_IN));
+				} else {
+					System.out.println("You need to login before checking stats.");
+				}
 			}
 			});
 		
         keyword_method_map.put(Keyword.REGISTER,new Commands() {
 			public void invoke() throws Exception{
-				Database.class.getMethod("write_new_player").invoke(null);
+				Clientbase.class.getMethod("write_new_player").invoke(null);
 			}
 			});
         
         keyword_method_map.put(Keyword.START,new Commands() {
 			public void invoke() throws Exception{
+				if(Clientbase.LOGGED_IN != null) {
 				Match.class.getMethod("start").invoke(new Main());
+				} else {
+					System.out.println("You need to login before starting a match.");
+				}
 			}
 			});
         
-        //keyword_method_map.put(Keyword.NEW, Keyword.class.getMethod("event_add"));
-        //keyword_method_map.put(Keyword.START, Main.class.getMethod("main", String[]{}));
 
         		
 		}
