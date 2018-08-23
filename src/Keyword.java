@@ -1,19 +1,18 @@
 import java.io.BufferedReader;
-import java.lang.reflect.*;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Keyword {
-	private static String KEYWORD_FILE = "/Users/cocop/eclipse-workspace/Pongalytics/src/data/keywords.txt";
+	private static String KEYWORD_FILE = System.getProperty("user.home") + "/eclipse-workspace/Pongalytics/src/data/keywords.txt";
 	public static String REGISTER = "register";
 	public static String NEW = "new";
 	public static String START = "start";
 	public static String STATS = "stats";
 	public static String LOGIN = "login";
+	public static String LOGOUT = "logout";
 	public Map<String, Commands> keyword_method_map;
 
 	public Keyword() throws Exception {
@@ -21,18 +20,28 @@ public class Keyword {
 		
 		keyword_method_map.put(Keyword.LOGIN, new Commands() {
 			public void invoke() throws Exception{
-				if(Clientbase.LOGGED_IN == null) {
-					Clientbase.class.getMethod("log_in").invoke(null);
+				if(Client.LOGGED_IN == null) {
+					Client.class.getMethod("log_in").invoke(null);
 				} else {
-					System.out.println("Already logged in as " + Clientbase.LOGGED_IN.get_handle());
+					System.out.println("Already logged in as " + Client.LOGGED_IN.get_handle());
+				}
+			}
+			});
+		
+		keyword_method_map.put(Keyword.LOGOUT, new Commands() {
+			public void invoke() throws Exception{
+				if(Client.LOGGED_IN != null) {
+					Client.class.getMethod("log_out").invoke(null);
+				} else {
+					System.out.println("You aren't logged in.");
 				}
 			}
 			});
 		
 		keyword_method_map.put(Keyword.STATS, new Commands() {
 			public void invoke() throws Exception{
-				if(Clientbase.LOGGED_IN != null) {
-					System.out.println(Player.class.getMethod("toString").invoke(Clientbase.LOGGED_IN));
+				if(Client.LOGGED_IN != null) {
+					System.out.println(Player.class.getMethod("toString").invoke(Client.LOGGED_IN));
 				} else {
 					System.out.println("You need to login before checking stats.");
 				}
@@ -41,13 +50,13 @@ public class Keyword {
 		
         keyword_method_map.put(Keyword.REGISTER,new Commands() {
 			public void invoke() throws Exception{
-				Clientbase.class.getMethod("write_new_player").invoke(null);
+				Client.class.getMethod("write_new_player").invoke(null);
 			}
 			});
         
         keyword_method_map.put(Keyword.START,new Commands() {
 			public void invoke() throws Exception{
-				if(Clientbase.LOGGED_IN != null) {
+				if(Client.LOGGED_IN != null) {
 				Match.class.getMethod("start").invoke(new Main());
 				} else {
 					System.out.println("You need to login before starting a match.");
@@ -65,6 +74,7 @@ public class Keyword {
 	
 	public static boolean is_keyword(String token) {
 		try {
+			@SuppressWarnings("resource")
 			BufferedReader br = new BufferedReader(new FileReader(new File(Keyword.KEYWORD_FILE)));
 			if(br.ready()) {
 				
@@ -90,7 +100,7 @@ public class Keyword {
 			String reader_line;
 			if(br_read.ready()) {
 				while((reader_line = br_read.readLine()) != null) {
-					if(line.contains(reader_line)) {
+					if(line.compareTo(reader_line) == 0) {
 						System.out.println("COMMAND_ACTIVATED: " + reader_line + ".");
 						this.get_keyword_map().get(line_tokens[0]).invoke();
 					}
